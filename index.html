@@ -1,0 +1,67 @@
+<div id="diag-container" style="font-family: 'Hiragino Kaku Gothic ProN', sans-serif; padding: 30px; background: #ffffff; border-radius: 25px; max-width: 500px; border: 1px solid #eee; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; color: #333;">
+    <div id="question-box">
+        <div style="font-size: 12px; color: #007bff; margin-bottom: 10px; font-weight: bold;">全館空調サブスク適性チェック</div>
+        <p id="q-text" style="font-size: 18px; font-weight: bold; line-height: 1.5; min-height: 80px;">診断を開始します</p>
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+            <button onclick="answer(true)" style="flex: 1; padding: 18px; background: #ff6b6b; color: white; border: none; border-radius: 15px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.2s;">Yes</button>
+            <button onclick="answer(false)" style="flex: 1; padding: 18px; background: #f0f0f0; color: #666; border: none; border-radius: 15px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.2s;">No</button>
+        </div>
+        <div id="progress" style="margin-top: 20px; font-size: 12px; color: #999;"></div>
+    </div>
+
+    <div id="result-box" style="display: none;">
+        <div id="res-icon" style="font-size: 50px; margin-bottom: 10px;">✨</div>
+        <h3 id="res-title" style="color: #ff6b6b; font-size: 22px; margin-bottom: 15px;"></h3>
+        <p id="res-desc" style="font-size: 15px; color: #555; line-height: 1.7; text-align: left; background: #fff5f5; padding: 15px; border-radius: 10px;"></p>
+        <button onclick="location.reload()" style="margin-top: 20px; background: none; border: 1px solid #ddd; padding: 8px 20px; border-radius: 5px; cursor: pointer; color: #999;">もう一度診断する</button>
+    </div>
+</div>
+
+<script>
+const questions = [
+    "冬の脱衣所や廊下が『寒い』と感じる？",
+    "エアコンのフィルター掃除を『面倒だ』と思う？",
+    "花粉やホコリのない『綺麗な空気』で暮らしたい？",
+    "ペットや睡眠のために『24時間一定の温度』が必要？",
+    "初期費用で数百万円払うのは『リスク』だと思う？",
+    "10年後の故障や買い替えの出費が『心配』？",
+    "スマホのように『月々定額』で最新の快適さを維持したい？"
+];
+let currentQ = 0;
+let yesCount = 0;
+
+function updateQ() {
+    if(currentQ < questions.length) {
+        document.getElementById('q-text').innerText = questions[currentQ];
+        document.getElementById('progress').innerText = `質問 ${currentQ + 1} / ${questions.length}`;
+    } else {
+        showResult();
+    }
+}
+
+function answer(isYes) {
+    if(isYes) yesCount++;
+    currentQ++;
+    updateQ();
+}
+
+function showResult() {
+    document.getElementById('question-box').style.display = 'none';
+    const resBox = document.getElementById('result-box');
+    const resTitle = document.getElementById('res-title');
+    const resDesc = document.getElementById('res-desc');
+    resBox.style.display = 'block';
+
+    if(yesCount >= 5) {
+        resTitle.innerText = "あなたはサブスク必須タイプ！";
+        resDesc.innerText = "驚きの結果です！あなたは『快適・健康・安心』を賢く手に入れたい、次世代のライフスタイルをお持ちです。初期費用0円、月々定額で『家中ふかふか温度』と『メンテナンスフリー』が手に入る全館空調サブスクこそ、あなたの家のOSとして最適です。";
+    } else if(yesCount >= 3) {
+        resTitle.innerText = "サブスク導入のメリット大！";
+        resDesc.innerText = "今の生活に不満は少なくても、全館空調サブスクを導入することで、家の中の『温度のバリア』が消え、想像以上の開放感が手に入ります。まずは月々の支払額をシミュレーションしてみませんか？";
+    } else {
+        resTitle.innerText = "全館空調の『体験』から始めましょう";
+        resDesc.innerText = "現状のままでも快適ですが、全館空調がもたらす『24時間の安定感』を知ることで、新しい豊かさに気づくかもしれません。モデルハウスでその『空気』を一度体感してみてください。";
+    }
+}
+updateQ();
+</script>
